@@ -18,7 +18,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
-  <artifactId>bad_names_examples</artifactId>
+  <artifactId>equals_checker_example</artifactId>
 
   <build>
     <plugins>
@@ -46,7 +46,7 @@
             </path>
             <path>
               <groupId>edu.appstate.cs.checker</groupId>
-              <artifactId>bad_names_plugin</artifactId>
+              <artifactId>equals_checker_plugin</artifactId>
               <version>1.0-SNAPSHOT</version>
             </path>
           </annotationProcessorPaths>

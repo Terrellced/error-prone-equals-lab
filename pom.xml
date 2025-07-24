@@ -6,8 +6,8 @@
   <version>1.0-SNAPSHOT</version>
 
   <modules>
-    <module>bad_names_plugin</module>
-    <module>bad_names_examples</module>
+    <module>equals_checker_plugin</module>
+    <module>equals_checker_examples</module>
   </modules>
 
   <packaging>pom</packaging>
