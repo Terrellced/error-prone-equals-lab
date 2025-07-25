@@ -24,7 +24,8 @@ public class BadNamesChecker extends BugChecker implements
         BugChecker.IdentifierTreeMatcher,
         BugChecker.MethodInvocationTreeMatcher,
         BugChecker.MethodTreeMatcher,
-        BugChecker.IfTreeMatcher {
+        BugChecker.IfTreeMatcher,
+        BugChecker.Tree {
 
     @java.lang.Override
     public Description matchIdentifier(IdentifierTree identifierTree, VisitorState visitorState) {
@@ -86,6 +87,34 @@ public class BadNamesChecker extends BugChecker implements
 
         return Description.NO_MATCH;
     }
+
+
+     @Override
+    public Description equalsChecker(Tree expTree, VisitorState visitorState){
+        if(expTree.getKind() == Kind.EQUAL_TO){
+            Type leftside = ASTHelper.getType(expressionTree.getLeftOperand());
+            Type leftside = ASTHelper.getType(expressionTree.getLeftOperand());
+
+        }
+
+        if(leftside.isPrimitive() && rightside.isPrimitive())
+        {
+            return Description.NO_MATCH;
+        }
+
+        if(leftside.)
+
+
+
+
+
+
+        return Description.NO_MATCH; 
+    }
+
+
+
+
 
     private static final IllegalStateException malformedMethodInvocationTree(MethodInvocationTree tree) {
         return new IllegalStateException(String.format("Method name %s is malformed.", tree));
