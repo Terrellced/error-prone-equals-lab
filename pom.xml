@@ -7,7 +7,7 @@
 
   <modules>
     <module>equals_checker_plugin</module>
-    <module>equals_checker_examples</module>
+    <module>equals_checker_example</module>
   </modules>
 
   <packaging>pom</packaging>

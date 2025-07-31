@@ -5,7 +5,10 @@ import com.google.errorprone.BugPattern;
 import com.google.errorprone.VisitorState;
 import com.google.errorprone.bugpatterns.BugChecker;
 import com.google.errorprone.matchers.Description;
+import com.google.errorprone.util.ASTHelpers;
+import com.sun.source.tree.Tree.Kind;
 import com.sun.source.tree.*;
+import com.sun.tools.javac.code.Type;
 
 import javax.lang.model.element.Name;
 
@@ -24,8 +27,7 @@ public class BadNamesChecker extends BugChecker implements
         BugChecker.IdentifierTreeMatcher,
         BugChecker.MethodInvocationTreeMatcher,
         BugChecker.MethodTreeMatcher,
-        BugChecker.IfTreeMatcher,
-        BugChecker.Tree {
+        BugChecker.IfTreeMatcher {
 
     @java.lang.Override
     public Description matchIdentifier(IdentifierTree identifierTree, VisitorState visitorState) {
@@ -89,25 +91,30 @@ public class BadNamesChecker extends BugChecker implements
     }
 
 
-     @Override
-    public Description equalsChecker(Tree expTree, VisitorState visitorState){
-        if(expTree.getKind() == Kind.EQUAL_TO){
-            Type leftside = ASTHelper.getType(expressionTree.getLeftOperand());
-            Type leftside = ASTHelper.getType(expressionTree.getLeftOperand());
+    
+    public Description equalsChecker(Tree tree, VisitorState visitorState){
+        if(tree.getKind() == Kind.EQUAL_TO){
+            BinaryTree binaryTree = (BinaryTree) tree;
+
+            ExpressionTree leftOperand = binaryTree.getLeftOperand();
+            ExpressionTree rightOperand = binaryTree.getRightOperand();
+
+            Type leftside = ASTHelpers.getType(leftOperand);
+            Type rightside = ASTHelpers.getType(rightOperand);
+
+
+
+            if(leftside.isPrimitive() && rightside.isPrimitive())
+            {
+                return Description.NO_MATCH;
+            }
+
+            return buildDescription(tree)
+                    .setMessage(String.format("Use .equals() instead of == for comparison of primitive types."))
+                    .build();
+           
 
         }
-
-        if(leftside.isPrimitive() && rightside.isPrimitive())
-        {
-            return Description.NO_MATCH;
-        }
-
-        if(leftside.)
-
-
-
-
-
 
         return Description.NO_MATCH; 
     }
