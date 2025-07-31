@@ -27,7 +27,10 @@ public class BadNamesChecker extends BugChecker implements
         BugChecker.IdentifierTreeMatcher,
         BugChecker.MethodInvocationTreeMatcher,
         BugChecker.MethodTreeMatcher,
-        BugChecker.IfTreeMatcher {
+        BugChecker.IfTreeMatcher,
+        BugChecker.BinaryTreeMatcher //probably needs to be removed.
+
+        {
 
     @java.lang.Override
     public Description matchIdentifier(IdentifierTree identifierTree, VisitorState visitorState) {
@@ -91,10 +94,10 @@ public class BadNamesChecker extends BugChecker implements
     }
 
 
-    
-    public Description equalsChecker(Tree tree, VisitorState visitorState){
-        if(tree.getKind() == Kind.EQUAL_TO){
-            BinaryTree binaryTree = (BinaryTree) tree;
+    @Override
+    public Description matchBinary(BinaryTree binaryTree, VisitorState visitorState){
+        if(binaryTree.getKind() == Kind.EQUAL_TO){
+            //BinaryTree binaryTree = (BinaryTree) tree;
 
             ExpressionTree leftOperand = binaryTree.getLeftOperand();
             ExpressionTree rightOperand = binaryTree.getRightOperand();
@@ -109,7 +112,7 @@ public class BadNamesChecker extends BugChecker implements
                 return Description.NO_MATCH;
             }
 
-            return buildDescription(tree)
+            return buildDescription(binaryTree)
                     .setMessage(String.format("Use .equals() instead of == for comparison of primitive types."))
                     .build();
            
@@ -118,7 +121,6 @@ public class BadNamesChecker extends BugChecker implements
 
         return Description.NO_MATCH; 
     }
-
 
 
 
