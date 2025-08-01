@@ -106,6 +106,16 @@ public class BadNamesChecker extends BugChecker implements
             Type rightside = ASTHelpers.getType(rightOperand);
 
 
+            if(ASTHelpers.constValue(leftOperand) == null || ASTHelpers.constValue(rightOperand) == null)
+            {
+                return Description.NO_MATCH;
+            }
+
+            //if they are null, do not throw warning
+            if(leftside == null || rightside == null)
+            {
+                return Description.NO_MATCH;
+            }
 
             if(leftside.isPrimitive() && rightside.isPrimitive())
             {
@@ -113,7 +123,7 @@ public class BadNamesChecker extends BugChecker implements
             }
 
             return buildDescription(binaryTree)
-                    .setMessage(String.format("Use .equals() instead of == for comparison of primitive types."))
+                    .setMessage(String.format("Use .equals() instead of == for comparison of objects, primitives. You may have meant to use .equals()")) //See if you can grab the exact code and give it by line.
                     .build();
            
 

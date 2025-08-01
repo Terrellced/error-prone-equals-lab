@@ -6,7 +6,7 @@ public class Example {
         List<String> list1 = new ArrayList<>();
         List<String> list2 = new ArrayList<>();
         if (list1 == list2) {
-        System.out.println("Testing...");
+        System.out.println("Testing..."); //throws error because you shold be using .equals instead of ==.
         }
     }
 }
