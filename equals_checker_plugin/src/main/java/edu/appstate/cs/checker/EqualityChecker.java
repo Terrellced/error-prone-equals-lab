@@ -17,18 +17,18 @@ import static com.google.errorprone.BugPattern.SeverityLevel.WARNING;
 
 @AutoService(BugChecker.class)
 @BugPattern(
-        name = "BadNamesChecker",
-        summary = "Poor-quality identifiers",
+        name = "EqualityChecker",
+        summary = "Invalid use of == in the place of .equals",
         severity = WARNING,
         linkType = CUSTOM,
         link = "https://github.com/plse-Lab/"
 )
-public class BadNamesChecker extends BugChecker implements
+public class EqualityChecker extends BugChecker implements
         BugChecker.IdentifierTreeMatcher,
         BugChecker.MethodInvocationTreeMatcher,
         BugChecker.MethodTreeMatcher,
         BugChecker.IfTreeMatcher,
-        BugChecker.BinaryTreeMatcher //probably needs to be removed.
+        BugChecker.BinaryTreeMatcher 
 
         {
 
@@ -74,12 +74,8 @@ public class BadNamesChecker extends BugChecker implements
         // MethodTree represents the definition of a method. We want to check the name of this
         // method to see if it is acceptable.
 
-        // TODO: What needs to be done here to check the name of the method?
         Name identifier = methodTree.getName();
         return checkName(methodTree, identifier);
-
-        // TODO: Remove this, if needed. This is just here because we need to return a Description.
-        // return Description.NO_MATCH;
     }
 
     private Description checkName(Tree tree, Name identifier) {
@@ -120,6 +116,14 @@ public class BadNamesChecker extends BugChecker implements
             if(leftside.isPrimitive() && rightside.isPrimitive())
             {
                 return Description.NO_MATCH;
+            }
+
+            Symbol.MethodSymbol enclosedMethod = ASTHelpers.getEnclosingMethod(getCurrentPath());
+            if(enclosedMethod != null){
+                String methodName = enclosedMethod.getSimpleName().toString();
+                if(methodName.equals("equals") || methodName.equals("compareTo")){
+                    return Description.NO_MATCH;
+                }
             }
 
             return buildDescription(binaryTree)
