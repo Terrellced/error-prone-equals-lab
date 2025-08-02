@@ -102,7 +102,8 @@ public class EqualityChecker extends BugChecker implements
             Type rightside = ASTHelpers.getType(rightOperand);
 
 
-            if(ASTHelpers.constValue(leftOperand) == null || ASTHelpers.constValue(rightOperand) == null)
+
+            if(ASTHelpers.constValue(leftOperand) != null || ASTHelpers.constValue(rightOperand) != null)
             {
                 return Description.NO_MATCH;
             }
@@ -113,16 +114,21 @@ public class EqualityChecker extends BugChecker implements
                 return Description.NO_MATCH;
             }
 
+            //checking for primitive types
             if(leftside.isPrimitive() && rightside.isPrimitive())
             {
                 return Description.NO_MATCH;
             }
 
-            Symbol.MethodSymbol enclosedMethod = ASTHelpers.getEnclosingMethod(getCurrentPath());
+            
+            MethodTree enclosedMethod = ASTHelpers.findEnclosingMethod(visitorState);
+
             if(enclosedMethod != null){
-                String methodName = enclosedMethod.getSimpleName().toString();
+                String methodName = enclosedMethod.getName().toString();
+                //checking for "==" inside of a equals/compareTo method so it doesnt flag
                 if(methodName.equals("equals") || methodName.equals("compareTo")){
                     return Description.NO_MATCH;
+                    
                 }
             }
 
