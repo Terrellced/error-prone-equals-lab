@@ -136,6 +136,7 @@ public class EqualityChecker extends BugChecker implements
                     .setMessage(String.format("Use .equals() instead of == for comparison of objects, primitives. You may have meant to use .equals()")) //See if you can grab the exact code and give it by line.
                     .build();
            
+           
 
         }
 
