@@ -98,7 +98,7 @@ public class EqualityChecker extends BugChecker implements
             }
 
             //if they are null, do not throw warning
-            if(leftside == null || rightside == null)
+            if(leftside.getKind() == Kind.NULL_LITERAL || rightside.getkind() == Kind.NULL_LITERAL())
             {
                 return Description.NO_MATCH;
             }
@@ -122,7 +122,7 @@ public class EqualityChecker extends BugChecker implements
             }
 
             return buildDescription(binaryTree)
-                    .setMessage(String.format("Use .equals() instead of == for comparison of objects, primitives. You may have meant to use .equals()")) //See if you can grab the exact code and give it by line.
+                    .setMessage(String.format("Take a look at this line again and see if you meant to use .equals() instead of == for object comparison or comparison of primitives. You may have meant to use .equals()")) //See if you can grab the exact code and give it by line.
                     .build();
            
            
