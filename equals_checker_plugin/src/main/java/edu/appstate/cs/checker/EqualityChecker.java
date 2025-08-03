@@ -27,7 +27,6 @@ public class EqualityChecker extends BugChecker implements
         BugChecker.IdentifierTreeMatcher,
         BugChecker.MethodInvocationTreeMatcher,
         BugChecker.MethodTreeMatcher,
-        BugChecker.IfTreeMatcher,
         BugChecker.BinaryTreeMatcher 
 
         {
@@ -38,16 +37,6 @@ public class EqualityChecker extends BugChecker implements
         // or just declarations?
         Name identifier = identifierTree.getName();
         return checkName(identifierTree, identifier);
-    }
-
-    @Override
-    public Description matchIf(IfTree tree, VisitorState state) {
-        if (tree.getElseStatement() == null) {
-            return buildDescription(tree)
-                .setMessage("We found an if without an else")
-                .build();
-        }
-        return Description.NO_MATCH;
     }
 
     @Override
