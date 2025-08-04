@@ -11,6 +11,7 @@ import com.sun.source.tree.*;
 import com.sun.tools.javac.code.Type;
 
 import javax.lang.model.element.Name;
+import javax.lang.model.element.ElementKind;
 
 import static com.google.errorprone.BugPattern.LinkType.CUSTOM;
 import static com.google.errorprone.BugPattern.SeverityLevel.WARNING;
@@ -98,7 +99,7 @@ public class EqualityChecker extends BugChecker implements
             }
 
             //if they are null, do not throw warning
-            if(leftside.getKind() == Kind.NULL_LITERAL || rightside.getkind() == Kind.NULL_LITERAL())
+            if(leftOperand.getKind() == Kind.NULL_LITERAL || rightOperand.getKind() == Kind.NULL_LITERAL)
             {
                 return Description.NO_MATCH;
             }
@@ -114,11 +115,17 @@ public class EqualityChecker extends BugChecker implements
 
             if(enclosedMethod != null){
                 String methodName = enclosedMethod.getName().toString();
-                //checking for "==" inside of a equals/compareTo method so it doesnt flag
-                if(methodName.equals("equals") || methodName.equals("compareTo")){
+                //checking for "==" inside of a equals method so it doesnt flag
+                if(methodName.equals("equals")){
                     return Description.NO_MATCH;
                     
                 }
+            }
+
+            //check for enum so no warnings are thrown
+            if(leftside.asElement().getKind() == ElementKind.ENUM || rightside.asElement().getKind() == ElementKind.ENUM)
+            {
+                return Description.NO_MATCH;
             }
 
             return buildDescription(binaryTree)
